@@ -4,6 +4,7 @@
   "main": "index.js",
   "dependencies": {
     "abbrev": "^1.1.1",
+    "bcrypt": "^5.1.1",
     "cookie-signature": "^1.0.6",
     "cors": "^2.8.5",
     "delegates": "^1.0.0",
@@ -12,6 +13,7 @@
     "express-fileupload": "^1.5.1",
     "fs.realpath": "^1.0.0",
     "inherits": "^2.0.4",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "once": "^1.4.0",
     "path-to-regexp": "^0.1.7",
