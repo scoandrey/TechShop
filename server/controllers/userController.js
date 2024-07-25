@@ -14,11 +14,11 @@ class UserController {
     try {
       const { email, password, role } = req.body;
       if (!email || !password) {
-        return next(ApiError.badRequest("Введите корректные логин и пароль"));
+        return next(ApiError.badRequest("Enter the correct username and password"));
       }
       const candidate = await User.findOne({ where: { email } });
       if (candidate) {
-        return next(ApiError.badRequest("Пользователь уже существует"));
+        return next(ApiError.badRequest("User exist"));
       }
       const hashPassword = await bcrypt.hash(password, 10);
       const user = await User.create({ email, password: hashPassword, role });
@@ -35,11 +35,11 @@ class UserController {
       const { email, password } = req.body;
       const user = await User.findOne({ where: { email } });
       if (!user) {
-        return next(ApiError.internal("Пользователь не найден"));
+        return next(ApiError.internal("User did not find"));
       }
       const comparePassword = bcrypt.compareSync(password, user.password);
       if (!comparePassword) {
-        return next(ApiError.internal("Некорректный пароль"));
+        return next(ApiError.internal("Not valid password"));
       }
       const token = generateJwt(user.id, user.email, user.role);
       return res.json({ token });
@@ -49,11 +49,8 @@ class UserController {
   }
 
   async check(req, res, next) {
-    try {
-      res.json({ message: "Работает" });
-    } catch (error) {
-      next(error);
-    }
+   const token = generateJwt(req.user.id, req.user.email, req.user.role)
+   return res.json(token)
   }
 }
 

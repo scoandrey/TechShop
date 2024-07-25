@@ -35,10 +35,10 @@ class DeviceController {
   }
 
   async getAll(req, res) {
-    let { brandId, typeId, limit, page, info } = req.qury;
+    let { brandId, typeId, limit, page, info } = req.query;
     page = page || 1;
     limit = limit || 9;
-    let offset = page * limitt - limit;
+    let offset = page * limit - limit;
     let devices;
     if (!brandId && !typeId) {
       devices = await Device.findAndCountAll({ limit, offset });
