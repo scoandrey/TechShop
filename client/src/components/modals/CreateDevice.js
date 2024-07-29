@@ -1,34 +1,26 @@
-const CreateDevice = () => {
+import React from "react";
+import { Modal, Button } from "react-bootstrap";
+
+const CreateDevice = ({ show, onHide }) => {
   return (
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add Device</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <p></p>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Add Type</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="mb-3">
+          <input className="form-control" placeholder="Enter Device" />
         </div>
-      </div>
-    </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="outline-danger" onClick={onHide}>
+          Close
+        </Button>
+        <Button variant="outline-success" onClick={onHide}>
+          Add
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

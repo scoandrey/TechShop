@@ -1,49 +1,26 @@
-import { Form } from "react-bootstrap";
+import React from "react";
+import { Modal, Button } from "react-bootstrap";
 
-const CreateBrand = (show, onHide) => {
+const CreateBrand = ({ show, onHide }) => {
   return (
-    <div
-      className="modal-dialog modal-dialog-centered"
-      show={show}
-      onHide={onHide}
-    >
-      <div className="modal" tabindex="-1">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Add Brand</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <Form></Form>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                variant="outlone-success"
-                data-bs-dismiss="modal"
-                onClick={onHide}
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                variant="outlone-success"
-                data-bs-dismiss="modal"
-                onClick={onHide}
-              >
-                Add
-              </button>
-            </div>
-          </div>
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Add Type</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="mb-3">
+          <input className="form-control" placeholder="Enter Brand" />
         </div>
-      </div>
-    </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="outline-danger" onClick={onHide}>
+          Close
+        </Button>
+        <Button variant="outline-success" onClick={onHide}>
+          Add
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
