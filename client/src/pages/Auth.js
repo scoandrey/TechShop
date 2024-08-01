@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { LOGIN_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
 import { login, registration } from "../http/userApi";
+import { observer } from "mobx-react-lite";
+import { Context } from "..";
 
-const Auth = () => {
+const Auth = observer(() => {
+  const { user } = useContext(Context);
   const location = useLocation();
   const isLogin = location.pathname === LOGIN_ROUTE;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const click = async () => {
+  const click = async (event) => {
+    event.preventDefault();
+    let data;
     if (isLogin) {
-      const response = await login();
+      data = await login(email, password);
     } else {
-      const response = await registration(email, password);
-      console.log(response);
+      data = await registration(email, password);
+      console.log(data);
     }
+    user.setUser(user);
+    user.setIsAuth(true);
   };
 
   return (
@@ -32,18 +39,22 @@ const Auth = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></input>
+          />
           <input
             className="form-control mb-3"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></input>
+          />
           <div className="d-flex justify-content-between">
             {isLogin ? (
               <NavLink to={REGISTRATION_ROUTE}>
-                <button className="btn btn-info" style={{ width: 150 }}>
+                <button
+                  className="btn btn-info"
+                  type="button"
+                  style={{ width: 150 }}
+                >
                   Registration
                 </button>
               </NavLink>
@@ -51,6 +62,7 @@ const Auth = () => {
               <NavLink to={LOGIN_ROUTE}>
                 <button
                   className="btn btn-info align-self-end"
+                  type="button"
                   style={{ width: 150 }}
                 >
                   Enter
@@ -58,17 +70,17 @@ const Auth = () => {
               </NavLink>
             )}
             <button
-              type="submit"
+              onClick={click}
               className="btn btn-primary"
               style={{ width: 150 }}
             >
-              {isLogin ? "Login" : "Registration"}
+              {isLogin ? "Login" : "Register"}
             </button>
           </div>
         </form>
       </div>
     </div>
   );
-};
+});
 
 export default Auth;
