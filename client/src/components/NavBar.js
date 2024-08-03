@@ -8,6 +8,11 @@ const NavBar = observer(() => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
 
+  const logOut = () => {
+    user.setUser({});
+    user.setIsAuth(false);
+  };
+
   return (
     <nav
       className="navbar navbar-expand-lg bg-dark border-bottom border-body"
@@ -31,7 +36,7 @@ const NavBar = observer(() => {
             </button>
             <button
               className="btn btn-outline-success ms-2"
-              onClick={() => navigate(LOGIN_ROUTE)}
+              onClick={() => logOut()}
             >
               Log out
             </button>
@@ -40,7 +45,7 @@ const NavBar = observer(() => {
           <nav className="navbar-nav ms-auto mb-2 mb-lg-0">
             <button
               className="btn btn-primary"
-              onClick={() => user.setIsAuth(true)}
+              onClick={() => navigate(LOGIN_ROUTE)}
             >
               Authorization
             </button>
