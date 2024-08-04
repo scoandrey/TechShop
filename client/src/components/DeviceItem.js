@@ -17,7 +17,7 @@ const DeviceItem = ({ device }) => {
         <Image
           width={150}
           height={150}
-          src={ProcessingInstruction.env.REACT_APP_API_URL.device.img}
+          src={`${process.env.REACT_APP_API_URL}/${device.img}`}
         />
         <div className="d-flex justify-content-between align-items-center p-2 ">
           <div className="text-black-50">samsung</div>
