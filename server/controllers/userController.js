@@ -14,7 +14,9 @@ class UserController {
     try {
       const { email, password, role } = req.body;
       if (!email || !password) {
-        return next(ApiError.badRequest("Enter the correct username and password"));
+        return next(
+          ApiError.badRequest("Enter the correct username and password")
+        );
       }
       const candidate = await User.findOne({ where: { email } });
       if (candidate) {
@@ -48,9 +50,9 @@ class UserController {
     }
   }
 
-  async check(req, res, next) {
-   const token = generateJwt(req.user.id, req.user.email, req.user.role)
-   return res.json(token)
+  async check(req, res) {
+    const token = generateJwt(req.user.id, req.user.email, req.user.role);
+    return res.json(token);
   }
 }
 
