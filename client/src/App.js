@@ -15,12 +15,12 @@ const App = observer(() => {
   useEffect(() => {
     check()
       .then((data) => {
-        user.setUser(data); 
+        user.setUser(true); 
         user.setIsAuth(true);
       })
       .catch((error) => {
         console.error("Error checking auth:", error);
-      })
+      }) 
       .finally(() => setLoading(false));
   }, [user]);
 

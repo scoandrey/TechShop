@@ -31,6 +31,6 @@ export const getDevices = async () => {
 };
 
 export const getOneDevice = async (id) => {
-  const { data } = await $authHost.post("api/device" + id);
+  const { data } = await $host.get("api/device/" + id);
   return data;
 };
