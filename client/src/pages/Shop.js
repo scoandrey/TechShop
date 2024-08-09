@@ -4,7 +4,13 @@ import BrandBar from "../components/BrandBar";
 import DeviceList from "../components/DeviceList";
 import { observer } from "mobx-react-lite";
 import { Context } from "..";
-import { getBrands, getDevices, getTypes } from "../http/deviceApi";
+import {
+  createDevice,
+  getBrands,
+  getDevices,
+  getTypes,
+} from "../http/deviceApi";
+import Pages from "../components/Pages";
 
 const Shop = observer(() => {
   const { device } = useContext(Context);
@@ -12,8 +18,23 @@ const Shop = observer(() => {
   useEffect(() => {
     getTypes().then((data) => device.setTypes(data));
     getBrands().then((data) => device.setBrands(data));
-    getDevices().then((data) => device.setDevices(data.rows));
+    getDevices(null, null, 1, 3).then((data) => {
+      device.setDevices(data.rows);
+      device.setTotalCount(data.count);
+    });
   }, [device]);
+
+  useEffect(() => {
+    createDevice(
+      device.selectedType.id,
+      device.selectedBrand.id,
+      device.page,
+      2
+    ).then((data) => {
+      device.setDevices(data.rows);
+      device.setTotalCount(data.count);
+    });
+  }, [device, device.page, device.selectedType, device.selectedBrand]);
 
   return (
     <div className="container text-center">
@@ -24,6 +45,7 @@ const Shop = observer(() => {
         <div className="col-md-9">
           <BrandBar />
           <DeviceList />
+          <Pages />
         </div>
       </div>
     </div>

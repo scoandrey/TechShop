@@ -10,8 +10,8 @@ export const getTypes = async () => {
   return data;
 };
 
-export const createBrand = async (brand) => {
-  const { data } = await $authHost.post("api/brand", brand);
+export const createBrand = async () => {
+  const { data } = await $authHost.post("api/brand");
   return data;
 };
 
@@ -20,8 +20,10 @@ export const getBrands = async () => {
   return data;
 };
 
-export const createDevice = async (device) => {
-  const { data } = await $authHost.post("api/device", device);
+export const createDevice = async (typeId, brandId, page, limit = 5) => {
+  const { data } = await $authHost.post("api/device", {
+    params: { typeId, brandId, page, limit },
+  });
   return data;
 };
 
