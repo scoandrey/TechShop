@@ -15,7 +15,7 @@ const CreateDevice = observer(({ show, onHide }) => {
   useEffect(() => {
     getTypes().then((data) => device.setTypes(data));
     getBrands().then((data) => device.setBrands(data));
-  }, [device]);
+  }, []);
 
   const addInfo = () => {
     setInfo([...info, { title: "", description: "", number: Date.now() }]);

@@ -3,11 +3,19 @@ import { Modal, Button } from "react-bootstrap";
 import { createType } from "../../http/deviceApi";
 
 const CreateType = ({ show, onHide }) => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("");
+
   const addType = () => {
-    createType({ name: value }).then((data) => setValue(""));
-    onHide();
+    if (value.trim()) {
+      createType({ name: value }).then((data) => {
+        setValue("");
+      });
+      onHide();
+    } else {
+      alert("Please enter a valid type name.");
+    }
   };
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>

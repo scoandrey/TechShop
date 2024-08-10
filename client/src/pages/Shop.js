@@ -17,18 +17,19 @@ const Shop = observer(() => {
       device.setDevices(data.rows);
       device.setTotalCount(data.count);
     });
-  }, []);
+  }, [device]);
 
   useEffect(() => {
     getDevices(
       device.selectedType.id,
       device.selectedBrand.id,
+      device.page,
       device.limit
     ).then((data) => {
       device.setDevices(data.rows);
       device.setTotalCount(data.count);
     });
-  }, [device.page, device.selectedType, device.selectedBrand]);
+  }, [device.page, device.selectedType, device.selectedBrand, device.limit]);
 
   return (
     <div className="container text-center">
