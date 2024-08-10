@@ -15,12 +15,12 @@ class UserController {
       const { email, password, role } = req.body;
       if (!email || !password) {
         return next(
-          ApiError.badRequest("Enter the correct username and password")
+          ApiError.badRequest("Please provide a valid email and password.")
         );
       }
       const candidate = await User.findOne({ where: { email } });
       if (candidate) {
-        return next(ApiError.badRequest("User exist"));
+        return next(ApiError.badRequest("User already exists."));
       }
       const hashPassword = await bcrypt.hash(password, 10);
       const user = await User.create({ email, password: hashPassword, role });
@@ -37,11 +37,11 @@ class UserController {
       const { email, password } = req.body;
       const user = await User.findOne({ where: { email } });
       if (!user) {
-        return next(ApiError.internal("User did not find"));
+        return next(ApiError.internal("User not found."));
       }
-      const comparePassword = bcrypt.compareSync(password, user.password);
+      const comparePassword = await bcrypt.compare(password, user.password);
       if (!comparePassword) {
-        return next(ApiError.internal("Not valid password"));
+        return next(ApiError.internal("Invalid password."));
       }
       const token = generateJwt(user.id, user.email, user.role);
       return res.json({ token });
@@ -52,7 +52,7 @@ class UserController {
 
   async check(req, res) {
     const token = generateJwt(req.user.id, req.user.email, req.user.role);
-    return res.json(token);
+    return res.json({ token });
   }
 }
 
