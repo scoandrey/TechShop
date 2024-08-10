@@ -14,15 +14,23 @@ const Pages = observer(() => {
 
   return (
     <Pagination className="mt-5">
+      <Pagination.Prev
+        onClick={() => device.setPage(device.page - 1)}
+        disabled={device.page === 1}
+      />
       {pages.map((page) => (
         <Pagination.Item
           key={page}
           active={device.page === page}
-          onClick={device.setPage(page)}
+          onClick={() => device.setPage(page)}
         >
           {page}
         </Pagination.Item>
       ))}
+      <Pagination.Next
+        onClick={() => device.setPage(device.page + 1)}
+        disabled={device.page === pageCount}
+      />
     </Pagination>
   );
 });

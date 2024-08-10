@@ -4,12 +4,7 @@ import BrandBar from "../components/BrandBar";
 import DeviceList from "../components/DeviceList";
 import { observer } from "mobx-react-lite";
 import { Context } from "..";
-import {
-  createDevice,
-  getBrands,
-  getDevices,
-  getTypes,
-} from "../http/deviceApi";
+import { getBrands, getDevices, getTypes } from "../http/deviceApi";
 import Pages from "../components/Pages";
 
 const Shop = observer(() => {
@@ -18,23 +13,22 @@ const Shop = observer(() => {
   useEffect(() => {
     getTypes().then((data) => device.setTypes(data));
     getBrands().then((data) => device.setBrands(data));
-    getDevices(null, null, 1, 3).then((data) => {
+    getDevices(null, null, device.page, device.limit).then((data) => {
       device.setDevices(data.rows);
       device.setTotalCount(data.count);
     });
-  }, [device]);
+  }, []);
 
   useEffect(() => {
-    createDevice(
+    getDevices(
       device.selectedType.id,
       device.selectedBrand.id,
-      device.page,
-      2
+      device.limit
     ).then((data) => {
       device.setDevices(data.rows);
       device.setTotalCount(data.count);
     });
-  }, [device, device.page, device.selectedType, device.selectedBrand]);
+  }, [device.page, device.selectedType, device.selectedBrand]);
 
   return (
     <div className="container text-center">

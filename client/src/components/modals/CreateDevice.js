@@ -10,14 +10,16 @@ const CreateDevice = observer(({ show, onHide }) => {
   const [price, setPrice] = useState(0);
   const [file, setFile] = useState(null);
   const [info, setInfo] = useState([]);
-  const addInfo = () => {
-    setInfo([...info, { title: "", description: "", number: Date.now() }]);
-  };
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getTypes().then((data) => device.setTypes(data));
     getBrands().then((data) => device.setBrands(data));
   }, [device]);
+
+  const addInfo = () => {
+    setInfo([...info, { title: "", description: "", number: Date.now() }]);
+  };
 
   const removeInfo = (number) => {
     setInfo(info.filter((i) => i.number !== number));
@@ -29,16 +31,28 @@ const CreateDevice = observer(({ show, onHide }) => {
     );
   };
 
-  const addDevice = () => {
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("price", `${price}`);
-    formData.append("img", file);
-    formData.append("brandId", device.setSelectedBrand.id);
-    formData.append("typeId", device.setSelectedType.id);
-    formData.append("info", JSON.stringify(info));
+  const addDevice = async () => {
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("price", `${price}`);
+      formData.append("img", file);
+      formData.append("brandId", device.selectedBrand.id);
+      formData.append("typeId", device.selectedType.id);
+      formData.append("info", JSON.stringify(info));
 
-    createDevice(formData).then((data) => onHide);
+      await createDevice(formData);
+      setName("");
+      setPrice(0);
+      setFile(null);
+      setInfo([]);
+      onHide();
+    } catch (error) {
+      alert("Failed to add device. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const selectFile = (e) => {
@@ -48,13 +62,13 @@ const CreateDevice = observer(({ show, onHide }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add Type</Modal.Title>
+        <Modal.Title>Add Device</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="mb-3">
           <Dropdown className="mt-2 mb-2">
             <Dropdown.Toggle>
-              {device.setSelectedType.name || "Select Device"}
+              {device.selectedType.name || "Select Device"}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {device.types.map((type) => (
@@ -69,7 +83,7 @@ const CreateDevice = observer(({ show, onHide }) => {
           </Dropdown>
           <Dropdown className="mt-2 mb-2">
             <Dropdown.Toggle>
-              {device.setSelectedBrand.name || "Select Brand"}
+              {device.selectedBrand.name || "Select Brand"}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {device.brands.map((brand) => (
@@ -82,25 +96,26 @@ const CreateDevice = observer(({ show, onHide }) => {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          <Form.Control
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-3"
-            placeholder="Enter device"
-          />
-          <Form.Control
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
-            className="mt-3"
-            placeholder="Enter price"
-            type="number"
-          />
-          <Form.Control
-            className="mt-3"
-            placeholder="Enter device"
-            type="file"
-            onChange={selectFile}
-          />
+          <Form.Group className="mt-3">
+            <Form.Control
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter device"
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mt-3">
+            <Form.Control
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              placeholder="Enter price"
+              type="number"
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mt-3">
+            <Form.Control type="file" onChange={selectFile} required />
+          </Form.Group>
           <hr />
           <Button variant="outline-dark" onClick={addInfo}>
             Add property
@@ -111,7 +126,7 @@ const CreateDevice = observer(({ show, onHide }) => {
                 <Form.Control
                   value={i.title}
                   onChange={(e) =>
-                    changeInfo("title", e.target.value, e.number)
+                    changeInfo(i.number, "title", e.target.value)
                   }
                   placeholder="Enter name of property"
                 />
@@ -120,7 +135,7 @@ const CreateDevice = observer(({ show, onHide }) => {
                 <Form.Control
                   value={i.description}
                   onChange={(e) =>
-                    changeInfo("description", e.target.value, e.number)
+                    changeInfo(i.number, "description", e.target.value)
                   }
                   placeholder="Enter description of property"
                 />
@@ -141,8 +156,12 @@ const CreateDevice = observer(({ show, onHide }) => {
         <Button variant="outline-danger" onClick={onHide}>
           Close
         </Button>
-        <Button variant="outline-success" onClick={addDevice}>
-          Add
+        <Button
+          variant="outline-success"
+          onClick={addDevice}
+          disabled={loading || !name || !price || !file}
+        >
+          {loading ? "Adding..." : "Add"}
         </Button>
       </Modal.Footer>
     </Modal>

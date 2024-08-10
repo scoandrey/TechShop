@@ -20,6 +20,7 @@ const DevicePage = () => {
             width={300}
             height={300}
             src={`${process.env.REACT_APP_API_URL}/${device.img}`}
+            alt={device.name}
           />
         </Col>
         <Col md={4}>
@@ -64,7 +65,7 @@ const DevicePage = () => {
               padding: 10,
             }}
           >
-            {info.title}:{device.info}
+            <strong>{info.title}:</strong> {info.description}
           </Row>
         ))}
       </Row>
@@ -73,38 +74,3 @@ const DevicePage = () => {
 };
 
 export default DevicePage;
-
-// const device = {
-//   id: 1,
-//   name: "Iphone 15 pro max",
-//   price: 1000,
-//   rating: 5,
-//   img: "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch_GEO_US?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=VW44dkRidm5wazhwcGxtL0cyaEJ2VTkrNXBUdUJSK1k4NE5seUtJaW80ZWVodDhQODlsUWorNVh3SzNuSFFmNUFOL1haWCt6TDJ0UWlLb09XajVNdEV0cFVnZ3ZFSFRBQ3V3NlRDYUtORXlEY2Y3dHhKeERyUmluVjl5N1pOZ3hnRGpDc3VDTHRwelE5dFR1YWs0b0tnPT0=&traceId=1",
-// };
-// const description = [
-//   {
-//     id: 1,
-//     title: "RAM",
-//     description: "5Gb",
-//   },
-//   {
-//     id: 2,
-//     title: "Camera",
-//     description: "12pmx",
-//   },
-//   {
-//     id: 3,
-//     title: "Chip",
-//     description: "A 17 Pro",
-//   },
-//   {
-//     id: 4,
-//     title: "Core",
-//     description: "6",
-//   },
-//   {
-//     id: 5,
-//     title: "Battery",
-//     description: "10000Ah",
-//   },
-// ];
