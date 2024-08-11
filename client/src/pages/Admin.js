@@ -9,25 +9,25 @@ const Admin = () => {
   const [deviceVisible, setDeviceVisible] = useState(false);
   const [typeVisible, setTypeVisible] = useState(false);
   return (
-    <Container className="d-flex flex-column">
+    <Container className="d-flex flex-column align-items-center">
       <Button
         onClick={() => setBrandVisible(true)}
         variant="outline-dark"
-        className="mt-4 p-2"
+        className="mt-4 p-2 w-50"
       >
         Add Brand
       </Button>
       <Button
         onClick={() => setDeviceVisible(true)}
         variant="outline-dark"
-        className="mt-4 p-2"
+        className="mt-4 p-2 w-50"
       >
         Add Device
       </Button>
       <Button
         onClick={() => setTypeVisible(true)}
         variant="outline-dark"
-        className="mt-4 p-2"
+        className="mt-4 p-2 w-50"
       >
         Add Type
       </Button>

@@ -7,13 +7,23 @@ import DeviceStore from "./store/DeviceStore";
 export const Context = createContext(null);
 
 const root = createRoot(document.getElementById("root"));
+
+const containerStyle = {
+  height: "100vh", 
+  margin: 0,
+  padding: 0,
+  backgroundColor: "#f0f0f0", 
+};
+
 root.render(
-  <Context.Provider
-    value={{
-      user: new UserStore(),
-      device: new DeviceStore(),
-    }}
-  >
-    <App />
-  </Context.Provider>
+  <div style={containerStyle}>
+    <Context.Provider
+      value={{
+        user: new UserStore(),
+        device: new DeviceStore(),
+      }}
+    >
+      <App />
+    </Context.Provider>
+  </div>
 );
