@@ -2,6 +2,7 @@ const uuid = require("uuid");
 const { Device, DeviceInfo } = require("../models/models");
 const apiError = require("../error/apiError");
 const path = require("path");
+const ApiError = require("../error/apiError");
 class DeviceController {
   async create(req, res, next) {
     try {
@@ -75,6 +76,20 @@ class DeviceController {
       include: [{ model: DeviceInfo, as: "info" }],
     });
     return res.json(device);
+  }
+
+  async delete(req, res, next) {
+    try {
+      const { id } = req.params;
+      const device = await Device.findOne({ where: { id } });
+      if (!device) {
+        return next(ApiError.notFound("Device not found"));
+      }
+      await device.destroy();
+      return res.json({ message: "Device deleted successfully" });
+    } catch (error) {
+      next(ApiError.internal("Failed to delete device"));
+    }
   }
 }
 
