@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import { Context } from ".";
 import { check } from "./http/userApi";
 import { Spinner } from "react-bootstrap";
+import BasketButton from "./components/BasketButton";
 
 const App = observer(() => {
   const { user } = useContext(Context);
@@ -15,18 +16,21 @@ const App = observer(() => {
   useEffect(() => {
     check()
       .then((data) => {
-        user.setUser(true); 
+        user.setUser(true);
         user.setIsAuth(true);
       })
       .catch((error) => {
         console.error("Error checking auth:", error);
-      }) 
+      })
       .finally(() => setLoading(false));
   }, [user]);
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
         <Spinner animation="grow" />
       </div>
     );
@@ -36,6 +40,7 @@ const App = observer(() => {
     <BrowserRouter>
       <NavBar />
       <AppRouter />
+      <BasketButton /> {/* Кнопка корзины с модальным окном */}
     </BrowserRouter>
   );
 });

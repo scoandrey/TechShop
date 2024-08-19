@@ -15,7 +15,7 @@ const CreateDevice = observer(({ show, onHide }) => {
   useEffect(() => {
     getTypes().then((data) => device.setTypes(data));
     getBrands().then((data) => device.setBrands(data));
-  }, []);
+  }, [device]);
 
   const addInfo = () => {
     setInfo([...info, { title: "", description: "", number: Date.now() }]);
@@ -65,92 +65,88 @@ const CreateDevice = observer(({ show, onHide }) => {
         <Modal.Title>Add Device</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="mb-3">
-          <Dropdown className="mt-2 mb-2">
-            <Dropdown.Toggle>
-              {device.selectedType.name || "Select Device"}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {device.types.map((type) => (
-                <Dropdown.Item
-                  onClick={() => device.setSelectedType(type)}
-                  key={type.id}
-                >
-                  {type.name}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown className="mt-2 mb-2">
-            <Dropdown.Toggle>
-              {device.selectedBrand.name || "Select Brand"}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {device.brands.map((brand) => (
-                <Dropdown.Item
-                  onClick={() => device.setSelectedBrand(brand)}
-                  key={brand.id}
-                >
-                  {brand.name}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-          <Form.Group className="mt-3">
-            <Form.Control
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter device"
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Control
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
-              placeholder="Enter price"
-              type="number"
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Control type="file" onChange={selectFile} required />
-          </Form.Group>
-          <hr />
-          <Button variant="outline-dark" onClick={addInfo}>
-            Add property
-          </Button>
-          {info.map((i) => (
-            <Row className="mt-2" key={i.number}>
-              <Col md={4}>
-                <Form.Control
-                  value={i.title}
-                  onChange={(e) =>
-                    changeInfo(i.number, "title", e.target.value)
-                  }
-                  placeholder="Enter name of property"
-                />
-              </Col>
-              <Col md={4}>
-                <Form.Control
-                  value={i.description}
-                  onChange={(e) =>
-                    changeInfo(i.number, "description", e.target.value)
-                  }
-                  placeholder="Enter description of property"
-                />
-              </Col>
-              <Col md={4}>
-                <Button
-                  variant="outline-danger"
-                  onClick={() => removeInfo(i.number)}
-                >
-                  Delete
-                </Button>
-              </Col>
-            </Row>
-          ))}
-        </div>
+        <Dropdown className="mt-2 mb-2">
+          <Dropdown.Toggle>
+            {device.selectedType.name || "Select Device Type"}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {device.types.map((type) => (
+              <Dropdown.Item
+                onClick={() => device.setSelectedType(type)}
+                key={type.id}
+              >
+                {type.name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown className="mt-2 mb-2">
+          <Dropdown.Toggle>
+            {device.selectedBrand.name || "Select Brand"}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {device.brands.map((brand) => (
+              <Dropdown.Item
+                onClick={() => device.setSelectedBrand(brand)}
+                key={brand.id}
+              >
+                {brand.name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Form.Group className="mt-3">
+          <Form.Control
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter device"
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mt-3">
+          <Form.Control
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+            placeholder="Enter price"
+            type="number"
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mt-3">
+          <Form.Control type="file" onChange={selectFile} required />
+        </Form.Group>
+        <hr />
+        <Button variant="outline-dark" onClick={addInfo}>
+          Add property
+        </Button>
+        {info.map((i) => (
+          <Row className="mt-2" key={i.number}>
+            <Col md={4}>
+              <Form.Control
+                value={i.title}
+                onChange={(e) => changeInfo(i.number, "title", e.target.value)}
+                placeholder="Enter property"
+              />
+            </Col>
+            <Col md={4}>
+              <Form.Control
+                value={i.description}
+                onChange={(e) =>
+                  changeInfo(i.number, "description", e.target.value)
+                }
+                placeholder="Enter description of property"
+              />
+            </Col>
+            <Col md={4}>
+              <Button
+                variant="outline-danger"
+                onClick={() => removeInfo(i.number)}
+              >
+                Delete
+              </Button>
+            </Col>
+          </Row>
+        ))}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-danger" onClick={onHide}>
