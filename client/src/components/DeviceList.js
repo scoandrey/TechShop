@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../index";
 import { getDevices } from "../http/deviceApi";
 import { Button } from "react-bootstrap";
+import DeviceItem from "./DeviceItem";
 
 const DeviceList = observer(() => {
   const { device, basket } = useContext(Context);
@@ -31,18 +32,24 @@ const DeviceList = observer(() => {
   };
 
   return (
-    <div>
-      {device.devices.length === 0 ? (
-        <p>No devices available</p>
-      ) : (
-        device.devices.map((device, index) => (
-          <div key={`${device.id}-${index}`}> {/* Ensuring unique keys */}
-            <h4>{device.name}</h4>
-            <p>${device.price}</p>
-            <Button onClick={() => handleAddToBasket(device)}>Add to Basket</Button>
-          </div>
-        ))
-      )}
+    <div className="container">
+      <div className="row">
+        {device.devices.length === 0 ? (
+          <p>No devices available</p>
+        ) : (
+          device.devices.map((device, index) => (
+            <div className="col-md-3 mt-3" key={`${device.id}-${index}`}>
+              <DeviceItem device={device} />
+              <Button
+                className="mt-2"
+                onClick={() => handleAddToBasket(device)}
+              >
+                Add to Basket
+              </Button>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 });

@@ -1,3 +1,4 @@
+import React from "react";
 import { Image } from "react-bootstrap";
 import Star from "../assets/Star.png";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +26,12 @@ const DeviceItem = ({ device }) => {
             <Image src={Star} width={15} height={15} className="ms-1" />
           </div>
         </div>
-        <div className="text-center ">{device.name}</div>
+        <div 
+          className="text-center" 
+          style={{ width: 150, wordWrap: "break-word" }} 
+        >
+          {device.name}
+        </div>
       </div>
     </div>
   );
