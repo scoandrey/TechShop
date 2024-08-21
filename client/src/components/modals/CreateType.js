@@ -1,46 +1,34 @@
-import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import { createType } from "../../http/deviceApi";
+import React, { useContext } from "react";
+import { observer } from "mobx-react-lite";
+import { Context } from "../../index";
+import { Button } from "react-bootstrap";
 
-const CreateType = ({ show, onHide }) => {
-  const [value, setValue] = useState("");
+const CreateType = observer(() => {
+  const { device } = useContext(Context);
 
-  const addType = () => {
-    if (value.trim()) {
-      createType({ name: value }).then((data) => {
-        setValue("");
-      });
-      onHide();
-    } else {
-      alert("Please enter a valid type name.");
-    }
+  const handleDeleteType = (typeId) => {
+    device.setTypes(device.types.filter(type => type.id !== typeId));
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Add Type</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="mb-3">
-          <input
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            className="form-control"
-            placeholder="Enter Type"
-          />
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="outline-danger" onClick={onHide}>
-          Close
-        </Button>
-        <Button variant="outline-success" onClick={addType}>
-          Add
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <div>
+      <h3 className="m-2 text-center">Manage Type</h3>
+      <div className="d-flex flex-wrap">
+        {device.types.map(type => (
+          <div key={type.id} className="m-2">
+            <Button
+              variant="outline-primary"
+              className="mr-2"
+              onClick={() => device.setSelectedType(type)}
+            >
+              {type.name}
+            </Button>
+            <Button variant="danger" onClick={() => handleDeleteType(type.id)}>Delete</Button>
+          </div>
+        ))}
+      </div>
+    </div>
   );
-};
+});
 
 export default CreateType;

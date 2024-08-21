@@ -40,7 +40,7 @@ const App = observer(() => {
     <BrowserRouter>
       <NavBar />
       <AppRouter />
-      <BasketButton /> {/* Кнопка корзины с модальным окном */}
+      <BasketButton /> 
     </BrowserRouter>
   );
 });

@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
 import { getDevices } from "../http/deviceApi";
-import { Button } from "react-bootstrap";
 import DeviceItem from "./DeviceItem";
+import { Button } from "react-bootstrap"; // Import Bootstrap Button
 
 const DeviceList = observer(() => {
   const { device, basket } = useContext(Context);
@@ -35,17 +35,16 @@ const DeviceList = observer(() => {
     <div className="container">
       <div className="row">
         {device.devices.length === 0 ? (
-          <p>No devices available</p>
+          <p className="mt-4">No devices available</p>
         ) : (
           device.devices.map((device, index) => (
-            <div className="col-md-3 mt-3" key={`${device.id}-${index}`}>
+            <div key={`${device.id}-${index}`} className="col-6 col-sm-4 col-md-3 col-lg-3 mb-4">
               <DeviceItem device={device} />
-              <Button
-                className="mt-2"
-                onClick={() => handleAddToBasket(device)}
-              >
-                Add to Basket
-              </Button>
+              <div className="text-center mt-2">  {/* Center and add margin above button */}
+                <Button onClick={() => handleAddToBasket(device)} variant="primary">
+                  Add to Basket
+                </Button>
+              </div>
             </div>
           ))
         )}

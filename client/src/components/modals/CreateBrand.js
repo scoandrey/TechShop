@@ -1,39 +1,34 @@
-import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import { createBrand } from "../../http/deviceApi";
+import React, { useContext } from "react";
+import { observer } from "mobx-react-lite";
+import { Context } from "../../index";
+import { Button } from "react-bootstrap";
 
-const CreateBrand = ({ show, onHide }) => {
-  const [value, setValue] = useState("");
-  const addBrand = () => {
-    createBrand({ name: value }).then((data) => setValue(""));
-    onHide();
+const CreateBrand = observer(() => {
+  const { device } = useContext(Context);
+
+  const handleDeleteBrand = (brandId) => {
+    device.setBrands(device.brands.filter(brand => brand.id !== brandId));
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Add Brand</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="mb-3">
-          <input
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            className="form-control"
-            placeholder="Enter Brand"
-          />
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="outline-danger" onClick={onHide}>
-          Close
-        </Button>
-        <Button variant="outline-success" onClick={addBrand}>
-          Add
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <div className="">
+      <h3 className="m-2 text-center">Manage Brand</h3>
+      <div className="d-flex flex-wrap">
+        {device.brands.map(brand => (
+          <div key={brand.id} className="m-2">
+            <Button
+              variant="outline-primary"
+              className="mr-2"
+              onClick={() => device.setSelectedBrand(brand)}
+            >
+              {brand.name}
+            </Button>
+            <Button variant="danger" onClick={() => handleDeleteBrand(brand.id)}>Delete</Button>
+          </div>
+        ))}
+      </div>
+    </div>
   );
-};
+});
 
 export default CreateBrand;

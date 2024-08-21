@@ -18,25 +18,26 @@ const Admin = () => {
         Add Brand
       </Button>
       <Button
-        onClick={() => setDeviceVisible(true)}
-        variant="outline-dark"
-        className="mt-4 p-2 w-50"
-      >
-        Add Device
-      </Button>
-      <Button
         onClick={() => setTypeVisible(true)}
         variant="outline-dark"
         className="mt-4 p-2 w-50"
       >
         Add Type
       </Button>
+      <Button
+        onClick={() => setDeviceVisible(true)}
+        variant="outline-dark"
+        className="mt-4 p-2 w-50"
+      >
+        Add Device
+      </Button>
+
       <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)} />
+      <CreateType show={typeVisible} onHide={() => setTypeVisible(false)} />
       <CreateDevice
         show={deviceVisible}
         onHide={() => setDeviceVisible(false)}
       />
-      <CreateType show={typeVisible} onHide={() => setTypeVisible(false)} />
     </Container>
   );
 };
