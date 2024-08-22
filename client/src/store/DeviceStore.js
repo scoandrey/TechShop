@@ -44,6 +44,14 @@ export default class DeviceStore {
     this._totalCount = count;
   }
 
+  removeType(typeId) {
+    this._types = this._types.filter(type => type.id !== typeId);
+  }
+
+  removeBrand(brandId) {
+    this._brands = this._brands.filter(brand => brand.id !== brandId);
+  }
+
   get types() {
     return this._types;
   }
@@ -55,6 +63,7 @@ export default class DeviceStore {
   get devices() {
     return this._devices;
   }
+
   get selectedType() {
     return this._selectedType;
   }

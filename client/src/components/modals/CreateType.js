@@ -2,12 +2,18 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
 import { Button } from "react-bootstrap";
+import axios from "axios";
 
 const CreateType = observer(() => {
   const { device } = useContext(Context);
 
-  const handleDeleteType = (typeId) => {
-    device.setTypes(device.types.filter(type => type.id !== typeId));
+  const handleDeleteType = async (typeId) => {
+    try {
+      await axios.delete(`http://localhost:7000/api/type/${typeId}`);
+      device.setTypes(device.types.filter(type => type.id !== typeId));
+    } catch (error) {
+      console.error("Error deleting type:", error);
+    }
   };
 
   return (
