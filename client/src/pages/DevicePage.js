@@ -6,14 +6,14 @@ import { getOneDevice } from "../http/deviceApi";
 import { Context } from "../index";
 
 const DevicePage = () => {
-  const { basket } = useContext(Context);  // Подключаем контекст корзины
+  const { basket } = useContext(Context);  
   const [device, setDevice] = useState({ info: [] });
   const { id } = useParams();
 
   useEffect(() => {
     getOneDevice(id).then((data) => {
       setDevice(data);
-      basket.addItem(data);  // Добавляем устройство в корзину при загрузке страницы
+      basket.addItem(data);  
     });
   }, [id, basket]);
 

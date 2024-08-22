@@ -14,7 +14,6 @@ const Basket = observer(() => {
         basket.items.map((item, index) => (
           <div key={`${item.id}-${index}`}>
             {" "}
-            {/* Ensuring unique keys */}
             <h4>{item.name}</h4>
             <p>${item.price}</p>
             <Button onClick={() => basket.removeItem(item.id)}>Remove</Button>

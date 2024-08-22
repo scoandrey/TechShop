@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../index";
 import { getDevices } from "../http/deviceApi";
 import DeviceItem from "./DeviceItem";
-import { Button } from "react-bootstrap"; // Import Bootstrap Button
+import { Button } from "react-bootstrap"; 
 
 const DeviceList = observer(() => {
   const { device, basket } = useContext(Context);
@@ -40,7 +40,7 @@ const DeviceList = observer(() => {
           device.devices.map((device, index) => (
             <div key={`${device.id}-${index}`} className="col-6 col-sm-4 col-md-3 col-lg-3 mb-4">
               <DeviceItem device={device} />
-              <div className="text-center mt-2">  {/* Center and add margin above button */}
+              <div className="text-center mt-2">  
                 <Button onClick={() => handleAddToBasket(device)} variant="primary">
                   Add to Basket
                 </Button>
