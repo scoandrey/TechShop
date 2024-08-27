@@ -2,12 +2,18 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
 import { Button } from "react-bootstrap";
+import axios from "axios";
 
 const CreateBrand = observer(() => {
   const { device } = useContext(Context);
 
-  const handleDeleteBrand = (brandId) => {
-    device.setBrands(device.brands.filter(brand => brand.id !== brandId));
+  const handleDeleteBrand = async (brandId) => {
+    try {
+      await axios.delete(`http://localhost:7000/api/brand/${brandId}`);
+      device.setBrands(device.brands.filter(brand => brand.id !== brandId));
+    } catch (error) {
+      console.error("Error deleting brand:", error);
+    }
   };
 
   return (
