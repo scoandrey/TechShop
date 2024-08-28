@@ -3,10 +3,9 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../index";
 import { getDevices } from "../http/deviceApi";
 import DeviceItem from "./DeviceItem";
-import { Button } from "react-bootstrap"; // Import Bootstrap Button
 
 const DeviceList = observer(() => {
-  const { device, basket } = useContext(Context);
+  const { device } = useContext(Context);
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -27,10 +26,6 @@ const DeviceList = observer(() => {
     fetchDevices();
   }, [device]);
 
-  const handleAddToBasket = (device) => {
-    basket.addItem(device);
-  };
-
   return (
     <div className="container">
       <div className="row">
@@ -38,13 +33,11 @@ const DeviceList = observer(() => {
           <p className="mt-4">No devices available</p>
         ) : (
           device.devices.map((device, index) => (
-            <div key={`${device.id}-${index}`} className="col-6 col-sm-4 col-md-3 col-lg-3 mb-4">
+            <div
+              key={`${device.id}-${index}`}
+              className="col-6 col-sm-4 col-md-3 col-lg-3 mb-4"
+            >
               <DeviceItem device={device} />
-              <div className="text-center mt-2">  {/* Center and add margin above button */}
-                <Button onClick={() => handleAddToBasket(device)} variant="primary">
-                  Add to Basket
-                </Button>
-              </div>
             </div>
           ))
         )}

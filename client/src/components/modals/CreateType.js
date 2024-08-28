@@ -1,39 +1,50 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import { Context } from "../..";
 import { observer } from "mobx-react-lite";
-import { Context } from "../../index";
-import { Button } from "react-bootstrap";
-import axios from "axios";
+import { createType } from "../../http/deviceApi"; // Assuming this API exists
 
-const CreateType = observer(() => {
+const CreateType = observer(({ show, onHide }) => {
   const { device } = useContext(Context);
+  const [name, setName] = useState("");
 
-  const handleDeleteType = async (typeId) => {
+  const addType = async () => {
     try {
-      await axios.delete(`http://localhost:7000/api/type/${typeId}`);
-      device.setTypes(device.types.filter(type => type.id !== typeId));
+      await createType({ name }); // Send the type name to the server
+      device.setTypes([...device.types, { id: Date.now(), name }]); // Update the types in state
+      setName("");
+      onHide();
     } catch (error) {
-      console.error("Error deleting type:", error);
+      alert("Failed to add type. Please try again.");
     }
   };
 
   return (
-    <div>
-      <h3 className="m-2 text-center">Manage Type</h3>
-      <div className="d-flex flex-wrap">
-        {device.types.map(type => (
-          <div key={type.id} className="m-2">
-            <Button
-              variant="outline-primary"
-              className="mr-2"
-              onClick={() => device.setSelectedType(type)}
-            >
-              {type.name}
-            </Button>
-            <Button variant="danger" onClick={() => handleDeleteType(type.id)}>Delete</Button>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Add Type</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form.Control
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter type name"
+          required
+        />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="outline-danger" onClick={onHide}>
+          Close
+        </Button>
+        <Button
+          variant="outline-success"
+          onClick={addType}
+          disabled={!name}
+        >
+          Add
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 });
 

@@ -6,16 +6,26 @@ import { getOneDevice } from "../http/deviceApi";
 import { Context } from "../index";
 
 const DevicePage = () => {
-  const { basket } = useContext(Context);  // Подключаем контекст корзины
-  const [device, setDevice] = useState({ info: [] });
+  const { basket } = useContext(Context);
+  const [device, setDevice] = useState({
+    info: [],
+  });
   const { id } = useParams();
 
   useEffect(() => {
-    getOneDevice(id).then((data) => {
-      setDevice(data);
-      basket.addItem(data);  // Добавляем устройство в корзину при загрузке страницы
-    });
-  }, [id, basket]);
+    getOneDevice(id)
+      .then((data) => {
+        console.log("Fetched device data:", data);
+        setDevice(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching device data:", error);
+      });
+  }, [id]);
+
+  const handleAddToBasket = () => {
+    basket.addItem(device);
+  };
 
   return (
     <Container className="mt-3">
@@ -29,7 +39,11 @@ const DevicePage = () => {
           />
           <h2 className="mt-3">{device.name}</h2>
         </Col>
-        <Col md={4} className="d-flex align-items-center justify-content-center">
+
+        <Col
+          md={4}
+          className="d-flex align-items-center justify-content-center"
+        >
           <div
             className="d-flex align-items-center justify-content-center"
             style={{
@@ -43,7 +57,11 @@ const DevicePage = () => {
             {device.rating}
           </div>
         </Col>
-        <Col md={4} className="d-flex align-items-center justify-content-center">
+
+        <Col
+          md={4}
+          className="d-flex align-items-center justify-content-center"
+        >
           <Card
             className="d-flex flex-column align-items-center justify-content-around"
             style={{
@@ -54,23 +72,30 @@ const DevicePage = () => {
             }}
           >
             <h3>Price: {device.price}$</h3>
-            <Button variant="outline-dark">Add to basket</Button>
+            <Button variant="outline-dark" onClick={handleAddToBasket}>
+              Add to basket
+            </Button>
           </Card>
         </Col>
       </Row>
+
       <Row className="d-flex flex-column m-3">
         <h3>Description:</h3>
-        {device.info.map((info, index) => (
-          <Row
-            key={info.id}
-            style={{
-              background: index % 2 === 0 ? "lightgray" : "transparent",
-              padding: 10,
-            }}
-          >
-            <strong>{info.title}:</strong> {info.description}
-          </Row>
-        ))}
+        {device.info && device.info.length > 0 ? (
+          device.info.map((info, index) => (
+            <Row
+              key={info.id || index}
+              style={{
+                background: index % 2 === 0 ? "lightgray" : "transparent",
+                padding: 10,
+              }}
+            >
+              <strong>{info.title}:</strong> {info.description}
+            </Row>
+          ))
+        ) : (
+          <p>No description available for this device.</p>
+        )}
       </Row>
     </Container>
   );

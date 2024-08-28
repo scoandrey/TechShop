@@ -1,39 +1,50 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import { Context } from "../..";
 import { observer } from "mobx-react-lite";
-import { Context } from "../../index";
-import { Button } from "react-bootstrap";
-import axios from "axios";
+import { createBrand } from "../../http/deviceApi"; // Assuming this API exists
 
-const CreateBrand = observer(() => {
+const CreateBrand = observer(({ show, onHide }) => {
   const { device } = useContext(Context);
+  const [name, setName] = useState("");
 
-  const handleDeleteBrand = async (brandId) => {
+  const addBrand = async () => {
     try {
-      await axios.delete(`http://localhost:7000/api/brand/${brandId}`);
-      device.setBrands(device.brands.filter(brand => brand.id !== brandId));
+      await createBrand({ name }); // Send the brand name to the server
+      device.setBrands([...device.brands, { id: Date.now(), name }]); // Update the brands in state
+      setName("");
+      onHide();
     } catch (error) {
-      console.error("Error deleting brand:", error);
+      alert("Failed to add brand. Please try again.");
     }
   };
 
   return (
-    <div className="">
-      <h3 className="m-2 text-center">Manage Brand</h3>
-      <div className="d-flex flex-wrap">
-        {device.brands.map(brand => (
-          <div key={brand.id} className="m-2">
-            <Button
-              variant="outline-primary"
-              className="mr-2"
-              onClick={() => device.setSelectedBrand(brand)}
-            >
-              {brand.name}
-            </Button>
-            <Button variant="danger" onClick={() => handleDeleteBrand(brand.id)}>Delete</Button>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Add Brand</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form.Control
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter brand name"
+          required
+        />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="outline-danger" onClick={onHide}>
+          Close
+        </Button>
+        <Button
+          variant="outline-success"
+          onClick={addBrand}
+          disabled={!name}
+        >
+          Add
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 });
 

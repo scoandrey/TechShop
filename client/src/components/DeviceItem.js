@@ -9,7 +9,12 @@ const DeviceItem = ({ device }) => {
   return (
     <div
       className="card"
-      style={{ width: "100%", cursor: "pointer", border: "1px solid lightgrey", marginTop: '10px' }}
+      style={{
+        width: "100%",
+        cursor: "pointer",
+        border: "1px solid lightgrey",
+        marginTop: "10px",
+      }}
       onClick={() => navigate(DEVICE_ROUTE + "/" + device.id)}
     >
       <Image
