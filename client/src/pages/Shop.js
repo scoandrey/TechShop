@@ -29,7 +29,7 @@ const Shop = observer(() => {
       device.setDevices(data.rows);
       device.setTotalCount(data.count);
     });
-  }, [device.page, device.selectedType, device.selectedBrand, device.limit]);
+  }, [device, device.page, device.selectedType, device.selectedBrand, device.limit]);
 
   return (
     <div className="container text-center">

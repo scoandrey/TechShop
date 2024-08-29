@@ -6,7 +6,7 @@ const BrandBar = observer(() => {
   const { device } = useContext(Context);
 
   return (
-    <div className="container text-center">
+    <div className="container text-center mt-2">
       <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
         {device.brands.map((brand) => (
           <div

@@ -5,21 +5,27 @@ import { Context } from "..";
 const TypeBar = observer(() => {
   const { device } = useContext(Context);
   return (
-    <div>
-      <ul className="list-group">
+    <div className="container text-center">
+      <div className="row">
         {device.types.map((type) => (
-          <li
-            className={`list-group-item ${
-              type.id === device.selectedType.id ? "active" : ""
-            }`}
+          <div
+            className="card p-1 mt-2"
             key={type.id}
             onClick={() => device.setSelectedType(type)}
-            style={{ cursor: "pointer", padding: "10px 0"}}
+            style={{
+              cursor: "pointer",
+              border:
+                type.id === device.selectedType.id
+                  ? "2px solid blue"
+                  : "2px solid lightgrey",
+              borderRadius: "5px",
+              marginRight: "10px",
+            }}
           >
             {type.name}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 });

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { Context } from "../..";
 import { observer } from "mobx-react-lite";
-import { createBrand } from "../../http/deviceApi"; // Assuming this API exists
+import { createBrand } from "../../http/deviceApi"; 
 
 const CreateBrand = observer(({ show, onHide }) => {
   const { device } = useContext(Context);

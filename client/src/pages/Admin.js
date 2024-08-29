@@ -55,25 +55,26 @@ const Admin = observer(() => {
         Add Device
       </Button>
 
-      {/* Manage Types */}
       <div className="mt-4 w-50">
-        <h3>Manage Types</h3>
+        <h3 className="text-primary">Manage Types</h3>
         {device.types.map((type) => (
           <div
             key={type.id}
             className="d-flex justify-content-between align-items-center"
           >
             <span>{type.name}</span>
-            <Button variant="danger" onClick={() => handleDeleteType(type.id)}>
+            <Button
+              variant="danger mt-2"
+              onClick={() => handleDeleteType(type.id)}
+            >
               Delete Type
             </Button>
           </div>
         ))}
       </div>
 
-      {/* Manage Brands */}
       <div className="mt-4 w-50">
-        <h3>Manage Brands</h3>
+        <h3 className="text-primary">Manage Brands</h3>
         {device.brands.map((brand) => (
           <div
             key={brand.id}
@@ -81,7 +82,7 @@ const Admin = observer(() => {
           >
             <span>{brand.name}</span>
             <Button
-              variant="danger"
+              variant="danger mt-2"
               onClick={() => handleDeleteBrand(brand.id)}
             >
               Delete Brand

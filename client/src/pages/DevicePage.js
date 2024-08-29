@@ -15,7 +15,6 @@ const DevicePage = () => {
   useEffect(() => {
     getOneDevice(id)
       .then((data) => {
-        console.log("Fetched device data:", data);
         setDevice(data);
       })
       .catch((error) => {
