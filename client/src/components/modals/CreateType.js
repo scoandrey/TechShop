@@ -10,8 +10,8 @@ const CreateType = observer(({ show, onHide }) => {
 
   const addType = async () => {
     try {
-      await createType({ name }); // Send the type name to the server
-      device.setTypes([...device.types, { id: Date.now(), name }]); // Update the types in state
+      await createType({ name }); 
+      device.setTypes([...device.types, { id: Date.now(), name }]); 
       setName("");
       onHide();
     } catch (error) {

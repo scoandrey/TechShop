@@ -10,8 +10,8 @@ const CreateBrand = observer(({ show, onHide }) => {
 
   const addBrand = async () => {
     try {
-      await createBrand({ name }); // Send the brand name to the server
-      device.setBrands([...device.brands, { id: Date.now(), name }]); // Update the brands in state
+      await createBrand({ name }); 
+      device.setBrands([...device.brands, { id: Date.now(), name }]); 
       setName("");
       onHide();
     } catch (error) {

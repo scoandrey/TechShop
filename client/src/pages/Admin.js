@@ -5,19 +5,30 @@ import CreateDevice from "../components/modals/CreateDevice";
 import CreateType from "../components/modals/CreateType";
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
+import axios from "axios";
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
   const [deviceVisible, setDeviceVisible] = useState(false);
   const [typeVisible, setTypeVisible] = useState(false);
-  const {device} = useContext(Context)
+  const { device } = useContext(Context);
 
-  const handleDeleteType = (typeId) => {
-    device.removeType(typeId);
+  const handleDeleteType = async (typeId) => {
+    try {
+      await axios.delete(`http://localhost:7000/api/type/${typeId}`);
+      device.setTypes(device.types.filter((type) => type.id !== typeId));
+    } catch (error) {
+      console.error("Error deleting type:", error);
+    }
   };
 
-  const handleDeleteBrand = (brandId) => {
-    device.removeBrand(brandId);
+  const handleDeleteBrand = async (brandId) => {
+    try {
+      await axios.delete(`http://localhost:7000/api/brand/${brandId}`);
+      device.setBrands(device.brands.filter((brand) => brand.id !== brandId));
+    } catch (error) {
+      console.error("Error deleting brand:", error);
+    }
   };
 
   return (
@@ -44,6 +55,7 @@ const Admin = observer(() => {
         Add Device
       </Button>
 
+      {/* Manage Types */}
       <div className="mt-4 w-50">
         <h3>Manage Types</h3>
         {device.types.map((type) => (
@@ -59,6 +71,7 @@ const Admin = observer(() => {
         ))}
       </div>
 
+      {/* Manage Brands */}
       <div className="mt-4 w-50">
         <h3>Manage Brands</h3>
         {device.brands.map((brand) => (
